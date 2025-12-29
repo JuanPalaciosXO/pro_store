@@ -1,0 +1,21 @@
+POST http://localhost:3000/api/v1/register HTTP/1.1
+Content-Type: application/json
+
+{
+  "NID_cliente": 123456789,
+  "nombre_cliente": "Samuel",
+  "apellido_cliente": "Useche",
+  "correo_cliente": "samuel@gmail.com",
+  "telefono_cliente": 320124142,
+  "direccion_cliente": "Calle 2",
+  "password": "123456"
+}
+
+###
+POST http://localhost:3000/api/v1/login HTTP/1.1
+Content-Type: application/json
+
+{
+  "correo_cliente": "juan@gmail.com",
+  "password": "1234"
+}
