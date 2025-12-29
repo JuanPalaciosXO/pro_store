@@ -1,5 +1,7 @@
 import bcrypt from "bcrypt";
-import db from "../config/db.js"
+import db from "../config/db.js";
+import jwt from "jsonwebtoken";
+
 
 const register = async (req, res) => {
   const {
@@ -57,8 +59,18 @@ const login = async (req, res) => {
       return res.status(400).json({ msg: "Contraseña incorrecta" });
     }
 
+    const token = jwt.sign(
+    {
+      id_cliente: user.id_cliente,
+      correo: user.correo_cliente
+    },
+    process.env.JWT_SECRET,
+    {expiresIn: "1d"}
+  );
+
     res.json({
       msg: "Login exitoso",
+      token,
       usuario: {
         id_cliente: user.id_cliente,
         nombre: user.nombre_cliente,

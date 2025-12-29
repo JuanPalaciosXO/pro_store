@@ -16,6 +16,11 @@ POST http://localhost:3000/api/v1/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "correo_cliente": "juan@gmail.com",
-  "password": "1234"
+  "correo_cliente": "samuel@gmail.com",
+  "password": "123456"
 }
+
+###
+GET http://localhost:3000/api/v1/perfil HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9jbGllbnRlIjoyLCJjb3JyZW8iOiJzYW11ZWxAZ21haWwuY29tIiwiaWF0IjoxNzY2OTgwNjU4LCJleHAiOjE3NjcwNjcwNTh9.EY0za38h32CkU10dgl1qgBONjlYmIehqoJAdWqL4xlE
+
