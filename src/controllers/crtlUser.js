@@ -6,7 +6,7 @@ import jwt from "jsonwebtoken";
 const register = async (req, res) => {
   const {
     NID_cliente, nombre_cliente, apellido_cliente, correo_cliente,
-    telefono_cliente, direccion_cliente, password,
+    telefono_cliente, direccion_cliente, password, rol
   } = req.body;
 
   try {
@@ -21,17 +21,19 @@ const register = async (req, res) => {
 
     const hashed = await bcrypt.hash(password, 10);
 
+    const rolFinal = rol === "admin" ? "admin" : "cliente";
+
     await db.query(
       `INSERT INTO user 
-      (NID_cliente, nombre_cliente, apellido_cliente, correo_cliente, telefono_cliente, direccion_cliente, password)
-      VALUES (?, ?, ?, ?, ?, ?, ?)`,
+      (NID_cliente, nombre_cliente, apellido_cliente, correo_cliente, telefono_cliente, direccion_cliente, password, rol)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
       [
         NID_cliente, nombre_cliente, apellido_cliente, correo_cliente,
-        telefono_cliente, direccion_cliente, hashed,
+        telefono_cliente, direccion_cliente, hashed, rolFinal
       ]
     );
 
-    res.json({ msg: "Usuario registrado correctamente" });
+    res.json({ msg: "Usuario registrado correctamente", rol: rolFinal });
   } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Error en el servidor" });
@@ -62,7 +64,8 @@ const login = async (req, res) => {
     const token = jwt.sign(
     {
       id_cliente: user.id_cliente,
-      correo: user.correo_cliente
+      correo: user.correo_cliente,
+      rol: user.rol,
     },
     process.env.JWT_SECRET,
     {expiresIn: "1d"}

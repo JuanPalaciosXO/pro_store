@@ -1,12 +1,13 @@
 import express from "express";
-import conectarDB from "./src/config/db.js";
-import userRoutes from "./src/routes/userRoutes.js"
+import userRoutes from "./src/routes/userRoutes.js";
+import productRoutes from "./src/routes/productRoutes.js";
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use("/api/v1", userRoutes);
+app.use("/api/v1", productRoutes);
 
 
 app.get("/", (req, res) =>{
