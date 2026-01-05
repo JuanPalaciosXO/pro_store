@@ -1,64 +1,32 @@
 import bcrypt from "bcrypt";
-import db from "../config/db.js";
 import jwt from "jsonwebtoken";
+import {registerUser, loginUser} from "../services/userServices.js"
 
 
-const register = async (req, res) => {
-  const {
-    NID_cliente, nombre_cliente, apellido_cliente, correo_cliente,
-    telefono_cliente, direccion_cliente, password, rol
-  } = req.body;
-
+export const register = async (req, res) => {
   try {
-    const [existe] = await db.query(
-      "SELECT * FROM user WHERE correo_cliente = ?",
-      [correo_cliente]
-    );
+    await registerUser(req.body);
+    res.status(201).json({msg: "Usuario registrado correctamente"});
 
-    if (existe.length > 0) {
-      return res.status(400).json({ msg: "El correo ya está registrado" });
+  } catch (error) {
+    if (error.message === "EMAIL_EXISTS") {
+      return res.status(400).json({msg:"Correo ya registrado"})
     }
 
-    const hashed = await bcrypt.hash(password, 10);
-
-    const rolFinal = rol === "admin" ? "admin" : "cliente";
-
-    await db.query(
-      `INSERT INTO user 
-      (NID_cliente, nombre_cliente, apellido_cliente, correo_cliente, telefono_cliente, direccion_cliente, password, rol)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?)`,
-      [
-        NID_cliente, nombre_cliente, apellido_cliente, correo_cliente,
-        telefono_cliente, direccion_cliente, hashed, rolFinal
-      ]
-    );
-
-    res.json({ msg: "Usuario registrado correctamente", rol: rolFinal });
-  } catch (error) {
     console.error(error);
     res.status(500).json({ msg: "Error en el servidor" });
   }
 };
 
-const login = async (req, res) => {
+export const login = async (req, res) => {
   const { correo_cliente, password } = req.body;
 
   try {
-    const [rows] = await db.query(
-      "SELECT * FROM user WHERE correo_cliente = ?",
-      [correo_cliente]
-    );
+    const user = await loginUser(correo_cliente);
 
-    if (rows.length === 0) {
-      return res.status(400).json({ msg: "Correo no encontrado" });
-    }
-
-    const user = rows[0];
-
-    const valid = await bcrypt.compare(password, user.password);
-
-    if (!valid) {
-      return res.status(400).json({ msg: "Contraseña incorrecta" });
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.status(400).json({msg: "Contraseña incorrecta"})
     }
 
     const token = jwt.sign(
@@ -79,10 +47,15 @@ const login = async (req, res) => {
         nombre: user.nombre_cliente,
         apellido: user.apellido_cliente,
         correo: user.correo_cliente,
-      },
+        rol: user.rol
+      }
     });
 
   } catch (error) {
+    if (error.message === "USER_NOT_FOUND") {
+      return res.status(400).json({msg: "Correo no encontrado"})
+    }
+
     console.error(error);
     res.status(500).json({ msg: "Error en el servidor" });
   }
