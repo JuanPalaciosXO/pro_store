@@ -22,14 +22,14 @@ POST http://localhost:3000/api/v1/login HTTP/1.1
 Content-Type: application/json
 
 {
-  "correo_cliente": "juaness@gmail.com",
+  "correo_cliente": "juaneslo@gmail.com",
   "password": "123456"
 }
 
 ###productos
 POST http://localhost:3000/api/v1/products HTTP/1.1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9jbGllbnRlIjo2LCJjb3JyZW8iOiJqdWFuZXNzQGdtYWlsLmNvbSIsInJvbCI6ImFkbWluIiwiaWF0IjoxNzY3MDcxNDIwLCJleHAiOjE3NjcxNTc4MjB9.UeJTtfihtsF-GC9S3FE6uuFp9teAtOfTlr3OcKZyg38
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9jbGllbnRlIjo5LCJjb3JyZW8iOiJqdWFuZXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc2OTM3MzEwNSwiZXhwIjoxNzY5NDU5NTA1fQ.UcmF_yD3OvK_3aPI7fT_CFstmXF_9c1e9Otpi-IfLqI
 
 {
   "nombre": "Chaqueta Red Bull",
@@ -60,7 +60,34 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9jbGllbnRlIjo2L
 DELETE http://localhost:3000/api/v1/products/1 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9jbGllbnRlIjo2LCJjb3JyZW8iOiJqdWFuZXNzQGdtYWlsLmNvbSIsInJvbCI6ImFkbWluIiwiaWF0IjoxNzY3MDcxNDIwLCJleHAiOjE3NjcxNTc4MjB9.UeJTtfihtsF-GC9S3FE6uuFp9teAtOfTlr3OcKZyg38
 
+### Pedidos
+POST http://localhost:3000/api/v1/orders HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9jbGllbnRlIjo5LCJjb3JyZW8iOiJqdWFuZXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc2OTM3MzEwNSwiZXhwIjoxNzY5NDU5NTA1fQ.UcmF_yD3OvK_3aPI7fT_CFstmXF_9c1e9Otpi-IfLqI
+Content-Type: application/json
 
+{
+  "productos": [
+    { "id_producto": 2, "cantidad": 2 },
+    { "id_producto": 3, "cantidad": 1 }
+  ]
+}
+
+###
+GET http://localhost:3000/api/v1/orders HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9jbGllbnRlIjo5LCJjb3JyZW8iOiJqdWFuZXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc2OTM3MzEwNSwiZXhwIjoxNzY5NDU5NTA1fQ.UcmF_yD3OvK_3aPI7fT_CFstmXF_9c1e9Otpi-IfLqI
+
+###
+GET http://localhost:3000/api/v1/orders/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9jbGllbnRlIjo5LCJjb3JyZW8iOiJqdWFuZXNAZ21haWwuY29tIiwicm9sIjoiY2xpZW50ZSIsImlhdCI6MTc2OTM3MzEwNSwiZXhwIjoxNzY5NDU5NTA1fQ.UcmF_yD3OvK_3aPI7fT_CFstmXF_9c1e9Otpi-IfLqI
+
+### Estado de paquete
+PATCH http://localhost:3000/api/v1/orders/1/status HTTP/1.1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZF9jbGllbnRlIjo4LCJjb3JyZW8iOiJqdWFuZXNsb0BnbWFpbC5jb20iLCJyb2wiOiJhZG1pbiIsImlhdCI6MTc2OTM5NjAyOSwiZXhwIjoxNzY5NDgyNDI5fQ.aXhKrlCbi_Qvwh0PaFH-Ij-jDJcLrzk7gyh25pdnXDk
+Content-Type: application/json
+
+{
+  "estado": "pagado"
+}
 
 
 
