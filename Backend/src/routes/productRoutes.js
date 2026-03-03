@@ -6,7 +6,7 @@ import esAdmin from "../middlewares/esAdmin.js";
 const router = express.Router();
 
 router.get("/products", productController.getProducts);
-router.get("/products/:id", productController.getProducts);
+router.get("/products/:id", productController.getProduct);
 router.post("/products", authMiddleware,esAdmin,productController.createProduct);
 router.put("/products/:id", authMiddleware, esAdmin, productController.updateProduct);
 router.delete("/products/:id", authMiddleware, esAdmin, productController.deleteProduct);

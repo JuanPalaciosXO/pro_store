@@ -1,4 +1,3 @@
-import db from "../config/db.js";
 import productServices from "../services/productServices.js";
 
 const createProduct = async (req, res) =>{
