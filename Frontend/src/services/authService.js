@@ -9,3 +9,8 @@ export const loginRequest = async (correo_cliente, password) =>{
     })
     return response.data;
 }
+
+export const registerRequest = async (datos) =>{
+    const response = await axios.post(`${API}/register`, datos)
+    return response.data;
+}

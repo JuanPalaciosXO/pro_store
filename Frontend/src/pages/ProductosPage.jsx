@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react"
+import { useNavigate } from "react-router-dom"
 import { useAuth } from "../context/AuthContext"
+import { useCart } from "../context/CartContext"
 import ProductoCard from "../components/ProductoCard"
 import { 
     getProductsRequest, 
@@ -18,6 +20,8 @@ const FORM_INICIAL = {
 
 function ProductosPage(){
     const { usuario, token, logout } = useAuth()
+    const { totalItems } = useCart()
+    const navigate = useNavigate()
     const esAdmin = usuario?.rol === "admin"
 
     const [productos, setProductos] = useState([])
@@ -90,13 +94,36 @@ function ProductosPage(){
 
     return (
     <div className="min-h-screen bg-gray-100">
-      {/* Navbar */}
       <nav className="bg-white shadow px-6 py-4 flex justify-between items-center">
         <h1 className="text-xl font-bold">Pro Store</h1>
         <div className="flex items-center gap-4">
           <span className="text-sm text-gray-600">
-            Hola, {usuario?.nombre} — {usuario?.rol}
+            Hola, {usuario?.nombre_cliente} — {usuario?.rol}
           </span>
+          
+          {esAdmin && (
+            <button
+              onClick={() => navigate('/admin')}
+              className="text-sm text-blue-600 hover:underline"
+            >
+              Panel admin
+            </button>
+          )}
+
+          {!esAdmin && (
+            <button
+              onClick={() => navigate('/carrito')}
+              className="relative bg-gray-100 px-3 py-1 rounded hover:bg-gray-200"
+            >
+              🛒
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                  {totalItems}
+                </span>
+              )}
+            </button>
+          )}
+
           <button
             onClick={logout}
             className="text-sm bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
@@ -135,8 +162,8 @@ function ProductosPage(){
             <div>
               <label className="block text-sm font-medium mb-1">Nombre</label>
               <input
-                name="nombre"
-                value={form.nombre}
+                name="nombre_producto"
+                value={form.nombre_producto}
                 onChange={handleFormChange}
                 className="w-full border rounded px-3 py-2"
                 required
@@ -206,7 +233,6 @@ function ProductosPage(){
         {loading && <p className="text-center text-gray-500">Cargando productos...</p>}
         {error && !mostrarForm && <p className="text-center text-red-500">{error}</p>}
 
-        {/* Grid de productos */}
         {!loading && (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {productos.map(producto => (

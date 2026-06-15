@@ -136,7 +136,7 @@ export const getOrderById = async (id_order, id_cliente, rol) =>{
 }
 
 export const updateOrderStatus = async (id_order, estado) =>{
-    const estadosValidos = ["pendiente", "pagado", "cancelado"];
+    const estadosValidos = ["pendiente", "pagado", "enviado", "entregado", "cancelado"];
 
     if (!estadosValidos.includes(estado)) {
         throw new Error("INVALID_STATUS");

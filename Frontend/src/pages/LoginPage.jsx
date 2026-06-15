@@ -2,6 +2,7 @@ import {useState} from "react";
 import { useNavigate } from "react-router-dom"
 import {loginRequest} from "../services/authService.js"
 import { useAuth } from "../context/AuthContext.jsx";
+import { Link } from "react-router-dom"
 
 function LoginPage(){
     const [correo, setCorreo] = useState("")
@@ -67,6 +68,13 @@ function LoginPage(){
           >
             {loading ? 'Ingresando...' : 'Ingresar'}
           </button>
+
+          <p className="text-center text-sm text-gray-500 mt-4">
+            ¿No tienes cuenta?{' '}
+            <Link to="/register" className="text-blue-600 hover:underline">
+              Regístrate
+            </Link>
+          </p>
         </form>
       </div>
     </div>
